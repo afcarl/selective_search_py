@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-import features
+from selective_search import features
 
 class TestFeaturesColorHistogram:
     def setup_method(self, method = None, w = 10, h = 10):

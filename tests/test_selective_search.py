@@ -5,7 +5,7 @@ import nose
 import nose.tools
 
 import numpy
-import selective_search
+from selective_search import algorithm
 
 class TestCalcAdjecencyMatrix:
     def setup_method(self, method):
@@ -16,7 +16,7 @@ class TestCalcAdjecencyMatrix:
         # 0, 0, 0, 0
         # 0, 0, 0, 0
         # 0, 0, 0, 0
-        (adj_mat, adj_dic) = selective_search._calc_adjacency_matrix(self.label, 1)
+        (adj_mat, adj_dic) = algorithm._calc_adjacency_matrix(self.label, 1)
         assert type(adj_mat) == numpy.ndarray
         assert adj_mat.shape == (1, 1) and adj_mat.dtype == bool
         assert adj_mat[0, 0] == True
@@ -31,7 +31,7 @@ class TestCalcAdjecencyMatrix:
         expected_mat = numpy.array([[True, True],\
                                     [True, True]])
 
-        (adj_mat, adj_dic) = selective_search._calc_adjacency_matrix(self.label, 2)
+        (adj_mat, adj_dic) = algorithm._calc_adjacency_matrix(self.label, 2)
         assert adj_mat.shape == (2, 2) and adj_mat.dtype == bool
         assert numpy.array_equal(adj_mat, expected_mat)
         assert adj_dic[0] == {1}
@@ -51,7 +51,7 @@ class TestCalcAdjecencyMatrix:
                                     [True, False, True, True],\
                                     [False, True, True, True]])
 
-        (adj_mat, adj_dic) = selective_search._calc_adjacency_matrix(self.label, 4)
+        (adj_mat, adj_dic) = algorithm._calc_adjacency_matrix(self.label, 4)
         assert numpy.diag(adj_mat).all()
         assert numpy.array_equal(adj_mat.transpose(), adj_mat)
         assert numpy.array_equal(adj_mat, expected_mat)
@@ -72,7 +72,7 @@ class TestCalcAdjecencyMatrix:
                                     [True, True, True],\
                                     [True, True, True]])
 
-        (adj_mat, adj_dic) = selective_search._calc_adjacency_matrix(self.label, 3)
+        (adj_mat, adj_dic) = algorithm._calc_adjacency_matrix(self.label, 3)
         assert numpy.array_equal(expected_mat, adj_mat)
         assert adj_dic[0] == {1, 2}
         assert adj_dic[1] == {0, 2}
@@ -89,7 +89,7 @@ class TestCalcAdjecencyMatrix:
                                     [True, True, True],\
                                     [True, True, True]])
 
-        (adj_mat, adj_dic) = selective_search._calc_adjacency_matrix(self.label, 3)
+        (adj_mat, adj_dic) = algorithm._calc_adjacency_matrix(self.label, 3)
         assert numpy.array_equal(expected_mat, adj_mat)
         assert adj_dic[0] == {1, 2}
         assert adj_dic[1] == {0, 2}
@@ -101,7 +101,7 @@ class TestCalcAdjecencyMatrix:
         # 8, 9,10,11
         #12,13,14,15
         self.label = numpy.array(range(16)).reshape((4,4))
-        (adj_mat, adj_dic) = selective_search._calc_adjacency_matrix(self.label, 16)
+        (adj_mat, adj_dic) = algorithm._calc_adjacency_matrix(self.label, 16)
         assert numpy.array_equal(adj_mat.transpose(), adj_mat)
         assert set(numpy.flatnonzero(adj_mat[ 0])) == { 0,  1,  4}
         assert set(numpy.flatnonzero(adj_mat[ 1])) == { 0,  1,  2,  5}
@@ -156,7 +156,7 @@ class TestNewAdjacencyDict:
         assert 6 not in self.A
 
     def test_label(self):
-        Ak = selective_search._new_adjacency_dict(self.A, 2, 3, 6)
+        Ak = algorithm._new_adjacency_dict(self.A, 2, 3, 6)
         assert 2 not in Ak
         assert 3 not in Ak
         assert Ak[0] == {1, 4, 6}
@@ -178,12 +178,12 @@ class TestNewLabel:
                                [5, 5, 5, 5, 5, 5]])
 
     def test_exclusiveness(self):
-        selective_search._new_label_image(self.L, 2, 3, 6)
+        algorithm._new_label_image(self.L, 2, 3, 6)
         assert len(self.L[self.L == 2]) == 4
         assert len(self.L[self.L == 3]) == 4
 
     def test_new_label(self):
-        Lk_actual = selective_search._new_label_image(self.L, 2, 3, 6)
+        Lk_actual = algorithm._new_label_image(self.L, 2, 3, 6)
         assert numpy.array_equal(self.Lk, Lk_actual)
 
 
@@ -211,7 +211,7 @@ class TestBuildInitialSimilaritySet:
                    #(5, (3, 2))
                     ]
 
-        S = selective_search._build_initial_similarity_set(self.A0, self.feature_extractor)
+        S = algorithm._build_initial_similarity_set(self.A0, self.feature_extractor)
         assert S == expected
 
 class TestMergeSimilaritySet:
@@ -234,7 +234,7 @@ class TestMergeSimilaritySet:
         self.extractor = type('Feature', (), {'similarity' : (lambda i, j: i + j)})
 
     def test_value(self):
-        S_ = selective_search._merge_similarity_set(self.extractor, self.Ak, self.S, 2, 3, 4)
+        S_ = algorithm._merge_similarity_set(self.extractor, self.Ak, self.S, 2, 3, 4)
         expect_S = [(1, (0, 1)),\
                     (4, (0, 4)),\
                     (5, (1, 4))]

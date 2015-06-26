@@ -3,7 +3,7 @@
 
 import pytest
 import numpy
-from color_space import *
+from selective_search.color_space import *
 
 class TestColorSpace:
     def _assert_range(self, img):
