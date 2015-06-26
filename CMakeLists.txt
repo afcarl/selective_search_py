@@ -17,7 +17,7 @@ else()
   message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different c++ compiler.")
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic-errors")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic-errors -Wno-unused-function")
 # use march=native option to enable SSE4.2
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native")
 
@@ -34,19 +34,7 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 # add python modules
 include_directories("include")
 python_add_module(segment src/segment_py.cpp)
-target_link_libraries(segment ${LMDB_LIBRARIES} ${PYTHON_LIBRARIES} ${Boost_LIBRARIES} boost_numpy)
+target_link_libraries(segment ${PYTHON_LIBRARIES} ${Boost_LIBRARIES} boost_numpy)
 
 # install
 install(TARGETS segment LIBRARY DESTINATION "${CMAKE_SOURCE_DIR}/selective_search")
-
-#execute_process(COMMAND python-config --cflags  OUTPUT_VARIABLE PYTHON3_CFLAGS  OUTPUT_STRIP_TRAILING_WHITESPACE)
-#execute_process(COMMAND python-config --ldflags OUTPUT_VARIABLE PYTHON3_LDFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
-#set(BOOST_LIBS "-lboost_system -lboost_python3 -lboost_numpy")
-
-#include_directories("segment")
-#set(CMAKE_CXX_FLAGS "-fPIC -O3 -std=c++11 ${PYTHON3_CFLAGS} ${SUPPRESS_WARNING}")
-#set(CMAKE_SHARED_LINKER_FLAGS "${PYTHON3_LDFLAGS} -shared -fPIC")
-
-#add_library(segment SHARED segment_py.cpp)
-#target_link_libraries(segment ${BOOST_LIBS} segment)
-#set_target_properties(segment PROPERTIES PREFIX "")
