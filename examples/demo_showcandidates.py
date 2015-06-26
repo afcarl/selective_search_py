@@ -7,9 +7,7 @@ import argparse
 import itertools
 import numpy
 import skimage.io
-import color_space
-import features
-import selective_search
+from selective_search import color_space, features, algorithm
 
 from PySide.QtCore import *
 from PySide.QtGui import *
@@ -142,7 +140,7 @@ class Demo(QWidget):
         ks = [float(k) for k in self.chosen_ks]
         similarity_masks = [features.SimilarityMask('S' in mask, 'C' in mask, 'T' in mask, 'F' in mask) for mask in self.chosen_similarities]
 
-        self.regions = selective_search.selective_search(self.ndimg, color_spaces, ks, similarity_masks)
+        self.regions = algorithm.selective_search(self.ndimg, color_spaces, ks, similarity_masks)
         self.slider.setMaximum(len(self.regions))
         self.slider.setValue(int(len(self.regions) / 4))
         self.__draw()

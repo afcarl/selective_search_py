@@ -6,9 +6,7 @@ import argparse
 import warnings
 import numpy
 import skimage.io
-import features
-import color_space
-import selective_search
+from selective_search import features, color_space, algorithm
 
 def generate_color_table(R):
     # generate initial color
@@ -40,7 +38,7 @@ if __name__=="__main__":
     print('feature:', ' '.join(args.feature))
 
     mask = features.SimilarityMask('size' in args.feature, 'color' in args.feature, 'texture' in args.feature, 'fill' in args.feature)
-    (R, F, L) = selective_search.hierarchical_segmentation(img, args.k, mask)
+    (R, F, L) = algorithm.hierarchical_segmentation(img, args.k, mask)
     print('result filename: %s_[0000-%04d].png' % (args.output, len(F) - 1))
 
     # suppress warning when saving result images
