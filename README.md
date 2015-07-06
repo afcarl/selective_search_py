@@ -21,9 +21,9 @@ This implementation is based on the journal edition of the original paper, and g
 
 * CMake (>= 2.8)
 * GCC (>= 4.8.2)
-* Python (>= 3.4.3)
+* Python (>= 2.7.0)
     * For required packages, see `requirements.txt`
-* Boost (>= 1.58.0) built with python support
+* Boost (>= 1.46.0) built with python support
 * [Boost.NumPy](https://github.com/ndarray/Boost.NumPy)
     * If you got an error to build, see [belltailjp/Boost.NumPy](https://github.com/belltailjp/Boost.NumPy))
 
@@ -146,11 +146,7 @@ To execute full test, type:
 
 # License
 
-This implementation is publicly available under the MIT license. See LICENSE.txt for more details.
-
-However regarding the selective search method itself, authors of the original paper have not mention anything so far.
-Please ask the original authors if you have any concens.
-
+This implementation is publicly available under the GPL license v3. See LICENSE.md for more details.
 
 # References
 
